@@ -1,0 +1,21 @@
+{
+  "name": "day-and-night",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "web": "node ./node_modules/nodemon/bin/nodemon.js --ignore ./data"
+  },
+  "author": "Alexander Prokopchuk",
+  "license": "MIT",
+  "dependencies": {
+    "browser-request": "^0.3.3",
+    "browserify": "^16.2.3",
+    "city-to-coords": "^1.1.0",
+    "express": "^4.16.3",
+    "moment": "^2.22.2",
+    "nodemon": "^1.18.4",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5"
+  }
+}
