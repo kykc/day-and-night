@@ -111,11 +111,11 @@ app.get('/api/approx-data', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     let dates = generateDates();
 
-    if (req.query.code === 'Baseline') {
+    if (req.query.code === '∅') {
         let result = {};
 
         for (var i = 0; i < dates.length; ++i) {
-            result[dates[i]] = {day_length: 1440 * 60};
+            result[dates[i]] = {day_length: 0};
         }
 
         res.send(JSON.stringify(result));

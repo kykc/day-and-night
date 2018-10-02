@@ -1,5 +1,15 @@
-var layout1 = {
-    yaxis: {rangemode: 'tozero', zeroline: true}
+const pad = x => ("00" + x).slice(-2);
+
+const toTime = function(v) {
+    return pad(parseInt(v / 60)) + "h" + pad(parseInt(v % 60)) + "s";
+};
+
+const layout = {
+    yaxis: {
+        range: [0, 1440],
+        tickvals: [...Array(25).keys()].map(x => x * 60),
+        ticktext: [...Array(25).keys()].map(x => x * 60).map(toTime)
+    }
 };
 
 var traces = [];
@@ -15,8 +25,11 @@ window.plotApprox = function(code) {
             var y = Object.values(clientData).map(row => row['day_length'] / 60);
 
             var trace = {x: x, y: y, type: 'scatter', name: code};
+
+            trace.text = trace.y.map(v => toTime(v));
             traces.push(trace);
-            Plotly.newPlot('div1', traces, layout1, {responsive: true});
+
+            Plotly.newPlot('div1', traces, layout, {responsive: true});
         }
 
         waitingDialog.hide();
@@ -30,7 +43,7 @@ window.drawClick = function() {
 
 window.clearPlots = function() {
     traces = [];
-    window.plotApprox('Baseline');
+    window.plotApprox('∅');
 };
 
 window.onload = function() {
@@ -45,7 +58,7 @@ window.onload = function() {
         }
     });
 
-    window.plotApprox('Baseline');
+    window.plotApprox('∅');
 };
 
 window.exportPlot = function() {
