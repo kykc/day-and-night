@@ -4,13 +4,14 @@ let express = require('express');
 let app = express();
 let fs = require('fs');
 let browserify = require('browserify');
-let cityToCoords = require("city-to-coords");
 let moment = require('moment');
+let request = require('request');
 
 let b = browserify();
 b.add('./api-client.js');
 let stream = b.bundle();
 let jsBundle = "";
+
 stream.on('data', function(chunk) {
     jsBundle += chunk;
 });
@@ -60,6 +61,19 @@ let generateDates = function() {
     return dates;
 };
 
+let getCoords = function(something, req, callback) {
+    let uri = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(something)}&format=json&polygon=0&addressdetails=1`;
+    let headers = {'User-Agent': req.get('User-Agent')};
+
+    request({uri: uri, headers: headers}, function(err, resp) {
+        if (resp.body && resp.statusCode == 200) {
+            callback(JSON.parse(resp.body));
+        } else {
+            callback({error: true});
+        }
+    });
+};
+
 app.get('/api/approx-day-length', function (req, res) {
     cityToCoords(req.query.code).then(async function(location) {
         res.setHeader('Content-Type', 'application/json');
@@ -79,6 +93,19 @@ app.get('/dashboard.css', function(req, res) {
     res.send(fs.readFileSync('client-html/dashboard.css', {encoding: "utf8"}));
 });
 
+app.get('/api/get-coords', function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+
+    getCoords(req.query.code, req, function(result) {
+        if (result.error || result.length === 0) {
+            res.send(JSON.stringify({error: true}));
+        } else {
+            res.send(JSON.stringify(result));
+        }
+    });
+
+});
+
 app.get('/api/approx-data', function (req, res) {
 
     res.setHeader('Content-Type', 'application/json');
@@ -93,17 +120,20 @@ app.get('/api/approx-data', function (req, res) {
 
         res.send(JSON.stringify(result));
     } else {
-        cityToCoords(req.query.code).then(function (location) {
-            let result = {};
+        getCoords(req.query.code, req, function (locations) {
+            if (locations.error || locations.length === 0) {
+                res.send(JSON.stringify({error: 'Location not found'}));
+            } else {
+                let location = locations[0]; // TODO: let the user choose in the autocomplete manner when more than one match found
+                let result = {};
 
-            for (var i = 0; i < dates.length; ++i) {
-                let dayIdx = parseInt(moment(dates[i]).format("DDD"));
-                result[dates[i]] = {day_length: calcDayLengthInSeconds(calcHourAngleOfSunrise(location['lat'], dayIdx))};
+                for (var i = 0; i < dates.length; ++i) {
+                    let dayIdx = parseInt(moment(dates[i]).format("DDD"));
+                    result[dates[i]] = {day_length: calcDayLengthInSeconds(calcHourAngleOfSunrise(location['lat'], dayIdx))};
+                }
+
+                res.send(JSON.stringify(result));
             }
-
-            res.send(JSON.stringify(result));
-        }, function (err) {
-            res.send(JSON.stringify({error: 'Location not found'}));
         });
     }
 });

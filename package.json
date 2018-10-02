@@ -11,7 +11,6 @@
   "dependencies": {
     "browser-request": "^0.3.3",
     "browserify": "^16.2.3",
-    "city-to-coords": "^1.1.0",
     "express": "^4.16.3",
     "moment": "^2.22.2",
     "nodemon": "^1.18.4",

@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard Template for Bootstrap</title>
+    <title>Day-n-night</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -35,7 +35,13 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="#">
                             <span data-feather="home"></span>
-                            Dashboard <span class="sr-only">(current)</span>
+                            Main <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://github.com/kykc/day-and-night">
+                            <span data-feather="github"></span>
+                            Source Code
                         </a>
                     </li>
                     <!--<li class="nav-item">
@@ -107,15 +113,17 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-                <h1 class="h2">Dashboard</h1>
+                <h1 class="h2">Main</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group mr-2">
                         <button class="btn btn-sm btn-outline-secondary" onclick="window.clearPlots()">Clear</button>
-                        <button class="btn btn-sm btn-outline-secondary" onclick="alert('Not implemented')">Export</button>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="window.exportPlot()">Export</button>
                     </div>
                 </div>
             </div>
-
+            View and compare day length changes through the year based on location. Search bar supports arbitrary input languages so 
+            <code class="text-monospace">Rīga</code>, <code class="text-monospace">Рига</code> and <code class="text-monospace">Riga</code>
+            should yield exactly the same results.
             <div id="div1" style="min-height: 720px;"></div>
 
 <!--            <h2>Section title</h2>

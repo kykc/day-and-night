@@ -44,3 +44,7 @@ window.onload = function() {
 
     window.plotApprox('Baseline');
 };
+
+window.exportPlot = function() {
+    document.querySelectorAll('[data-title="Download plot as a png"]')[0].click();
+};
