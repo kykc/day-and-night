@@ -5,6 +5,8 @@ var layout1 = {
 var traces = [];
 
 window.plotApprox = function(code) {
+
+    waitingDialog.show(undefined, {onHide: () => document.getElementById("locationSelect").focus()});
     window.getApprox(code, function(clientData) {
         if (clientData.error) {
             alert(code + ": " + clientData.error);
@@ -16,6 +18,8 @@ window.plotApprox = function(code) {
             traces.push(trace);
             Plotly.newPlot('div1', traces, layout1, {responsive: true});
         }
+
+        waitingDialog.hide();
     });
 };
 
@@ -30,7 +34,6 @@ window.clearPlots = function() {
 };
 
 window.onload = function() {
-
     document.getElementById('locationSelect').addEventListener("keyup", function(event) {
         // Cancel the default action, if needed
 
