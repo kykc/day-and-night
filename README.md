@@ -12,8 +12,8 @@ on location:
 ```bash
 git clone https://github.com/kykc/day-and-night.git
 cd day-and-night
-npm install
-npm run web
+yarn
+yarn web
 ```
 
 Then you can open browser at `http://localhost:3088` and start plotting
