@@ -1,7 +1,7 @@
 const pad = x => ("00" + x).slice(-2);
 
 const toTime = function(v) {
-    return pad(parseInt(v / 60)) + "h" + pad(parseInt(v % 60)) + "s";
+    return pad(parseInt(v / 60)) + "h" + pad(parseInt(v % 60)) + "m";
 };
 
 const layout = {
